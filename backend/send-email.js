@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
-const fs = require('fs');
+import fs from 'fs';
 
-const testResults = require('./test-results.json');
+import testResults from './test-results.json';
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
         pass: 'rJGQ97RewzT658rPEF'
     }
 });
+
 const formattedResults = `
 ${testResults.numFailedTests} failed tests
 ${testResults.numPassedTests} passed tests
