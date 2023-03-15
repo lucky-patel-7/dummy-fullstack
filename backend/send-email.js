@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 const fs = require('fs');
 
 const testResults = require('./test-results.json');
