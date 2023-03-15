@@ -1,7 +1,10 @@
 import nodemailer from 'nodemailer';
-import fs from 'fs';
+// import fs from 'fs';
+import fs from 'jsonfile';
+// import testResults form  jsonfile.readFileSync('./test-results.json');
 
-import testResults from './test-results.json';
+const testResults = fs.readFileSync('./test-results.json');
+
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
@@ -11,10 +14,10 @@ const transporter = nodemailer.createTransport({
         pass: 'rJGQ97RewzT658rPEF'
     }
 });
-
+console.log("testResults",testResults)
 const formattedResults = `
-${testResults.numFailedTests} failed tests
-${testResults.numPassedTests} passed tests
+${testResults.numFailedTestSuites} failed tests
+${testResults.numPassedTestSuites} passed tests
 ${testResults.numPendingTests} pending tests`;
 
 const mailOptions = {
