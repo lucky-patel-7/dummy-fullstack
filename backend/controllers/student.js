@@ -10,19 +10,26 @@ import LeaveApplication from "../models/LeaveApplication.js";
 
 class Students {
     static register = asyncWrapper(async (req, res) => {
-        var newStudent = new Student(req.body);
-        newStudent.hash_password = bcrypt.hashSync(req.body.password, 10);
-        newStudent.save((err, student) => {
-            if (err) {
-                let data = Response(Constants.RESULT_CODE.ERROR, Constants.RESULT_FLAG.FAIL, 'Student already registered', (err));
-                return res.send(data);
-
-            } else {
-                student.hash_password = undefined;
-                let data = Response(Constants.RESULT_CODE.OK, Constants.RESULT_FLAG.SUCCESS, 'Student registered', (student));
+          Student.find({Email:req.body.Email}).then((user) => {
+            if(user.length){
+                let data = Response(Constants.RESULT_CODE.ERROR, Constants.RESULT_FLAG.FAIL, 'Student already registered', '');
                 return res.send(data);
             }
-        });
+            var newStudent = new Student(req.body);
+            newStudent.hash_password = bcrypt.hashSync(req.body.password, 10);
+            newStudent.save((err, student) => {
+                if (err) {
+                    let data = Response(Constants.RESULT_CODE.ERROR, Constants.RESULT_FLAG.FAIL, 'Student already registered', (err));
+                    return res.send(data);
+    
+                } else {
+                    student.hash_password = undefined;
+                    let data = Response(Constants.RESULT_CODE.OK, Constants.RESULT_FLAG.SUCCESS, 'Student registered', (student));
+                    return res.send(data);
+                }
+            });
+        })
+
     })
 
     static sign_in = asyncWrapper(async (req, res) => {
@@ -218,3 +225,4 @@ export default Students;
 // const remainingSeconds = seconds % 60;
 
 // console.log(`Time difference: ${hours} hours, ${remainingMinutes} minutes, ${remainingSeconds} seconds.`);
+
